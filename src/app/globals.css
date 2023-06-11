@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;400;500;700&display=swap');
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -87,6 +89,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 a {
