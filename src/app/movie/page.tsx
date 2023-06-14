@@ -24,7 +24,20 @@ export default function Movie() {
 
   return (
     <>
+      <h1
+        style={{
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: 900,
+          fontSize: 60,
+        }}
+      >
+        The Movie Planet
+      </h1>
       <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium,
+        repudiandae!
+      </div>
+      <div style={{ margin: '24px 0' }}>
         <input
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
