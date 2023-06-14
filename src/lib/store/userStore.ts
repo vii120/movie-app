@@ -7,7 +7,7 @@ type UserState = {
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
-  lang: '',
+  lang: 'en-US',
   updateLang: (lang: string) => set({ lang }),
   isInit: () => get().lang !== '',
 }))
