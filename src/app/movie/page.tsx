@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
 import { getImgFullPath } from '@/lib/utils/helpers'
 
@@ -24,15 +25,7 @@ export default function Movie() {
 
   return (
     <>
-      <h1
-        style={{
-          fontFamily: 'Poppins, sans-serif',
-          fontWeight: 900,
-          fontSize: 60,
-        }}
-      >
-        The Movie Planet
-      </h1>
+      <Title>The Movie Planet</Title>
       <div>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium,
         repudiandae!
@@ -66,3 +59,9 @@ export default function Movie() {
     </>
   )
 }
+
+const Title = styled.h1`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 60px;
+`
