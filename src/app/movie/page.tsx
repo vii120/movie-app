@@ -9,14 +9,6 @@ export default function Movie() {
   const { movieList, fetchTrendMovie, fetchMovieGenres, onSearchMovie } =
     useMovieStore()
   const genreById = useMovieStore((state) => state.genreById())
-  const [searchInput, setSearchInput] = useState('')
-
-  const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const input = searchInput.trim()
-    if (e.key === 'Enter' && input !== '') {
-      onSearchMovie(input)
-    }
-  }
 
   useEffect(() => {
     fetchTrendMovie()
@@ -25,18 +17,6 @@ export default function Movie() {
 
   return (
     <>
-      <Title>The Movie Planet</Title>
-      <div>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium,
-        repudiandae!
-      </div>
-      <div style={{ margin: '24px 0' }}>
-        <input
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={onSearch}
-        />
-      </div>
       {movieList.map((movie) => {
         const year = new Date(movie.release_date).getFullYear()
         return (
@@ -59,9 +39,3 @@ export default function Movie() {
     </>
   )
 }
-
-const Title = styled.h1`
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: 60px;
-`
