@@ -1,22 +1,23 @@
-import { useState, ReactNode } from 'react'
+'use client'
 import styled from 'styled-components'
-import { useMovieStore } from '@/lib/store'
 import Link from 'next/link'
 
 export const Navbar = () => {
   return (
     <Container>
-      <Logo>logo</Logo>
+      <Logo href="/">logo</Logo>
       <Link href="/movie">movie</Link>
     </Container>
   )
 }
 
 const Container = styled.div`
+  height: 50px;
+  padding: 12px 36px;
   display: flex;
   align-items: center;
   gap: 12px;
 `
-const Logo = styled.div`
+const Logo = styled(Link)`
   margin-right: auto;
 `
