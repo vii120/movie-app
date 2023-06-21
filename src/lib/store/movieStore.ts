@@ -7,7 +7,7 @@ type MovieState = {
   moviePage: number
   movieList: MovieListType[]
   movieGenres: MovieGenreType[]
-  fetchTrendMovie: () => void
+  fetchTrendingMovie: () => void
   fetchMovieGenres: () => void
   onSearchMovie: (query: string) => void
   genreById: () => Record<number, string>
@@ -18,13 +18,12 @@ export const useMovieStore = create<MovieState>((set, get) => ({
   movieList: [],
   movieGenres: [],
   searchPage: 0,
-  fetchTrendMovie: async () => {
+  fetchTrendingMovie: async () => {
     const { lang } = useUserStore.getState()
     const queryString = getQueryString({ type: 'week', lang })
-    const url = `/api/movie/trend${queryString}`
+    const url = `/api/movie/trending${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
-    console.log('getTrendMovie', data)
     set({ moviePage: data.page })
     set((state) => ({ ...state.movieList, movieList: data.results }))
   },
@@ -43,7 +42,6 @@ export const useMovieStore = create<MovieState>((set, get) => ({
     const url = `/api/movie/search${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
-    console.log('onSearchMovie', data)
     set({ movieList: data.results })
   },
   genreById: () =>

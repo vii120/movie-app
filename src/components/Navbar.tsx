@@ -5,8 +5,16 @@ import Link from 'next/link'
 export const Navbar = () => {
   return (
     <Container>
-      <Logo href="/">logo</Logo>
-      <Link href="/movie">movie</Link>
+      <Logo href="/">MOVIE PLANET</Logo>
+      <Link href="/movie">Movie</Link>
+      <Link href="/tvseries">TV Series</Link>
+      <Link
+        href="https://github.com/vii120/movie-app"
+        target="_blank"
+        rel="noopener"
+      >
+        Github
+      </Link>
     </Container>
   )
 }
@@ -16,7 +24,10 @@ const Container = styled.div`
   padding: 12px 36px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  a {
+    padding: 6px 12px;
+  }
 `
 const Logo = styled(Link)`
   margin-right: auto;
