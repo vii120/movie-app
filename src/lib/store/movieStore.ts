@@ -10,7 +10,10 @@ type MovieState = {
   fetchTrendingMovie: () => void
   fetchMovieGenres: () => void
   onSearchMovie: (query: string) => void
-  genreById: () => Record<number, string>
+  computed: {
+    genreById: Record<number, string>
+    defaultQueries: Record<string, string>
+  }
 }
 
 export const useMovieStore = create<MovieState>((set, get) => ({
@@ -19,33 +22,48 @@ export const useMovieStore = create<MovieState>((set, get) => ({
   movieGenres: [],
   searchPage: 0,
   fetchTrendingMovie: async () => {
-    const { lang } = useUserStore.getState()
-    const queryString = getQueryString({ type: 'week', lang })
-    const url = `/api/movie/trending${queryString}`
+    const queryString = getQueryString({
+      ...get().computed.defaultQueries,
+      type: 'week',
+    })
+    const url = `/api/trending${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     set({ moviePage: data.page })
-    set((state) => ({ ...state.movieList, movieList: data.results }))
+    set((state) => ({ movieList: [...state.movieList, ...data.results] }))
   },
   fetchMovieGenres: async () => {
-    const { lang } = useUserStore.getState()
-    const queryString = getQueryString({ lang })
-    const url = `/api/movie/genre${queryString}`
+    const queryString = getQueryString({ ...get().computed.defaultQueries })
+    const url = `/api/genre${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     set({ movieGenres: data.genres })
   },
   onSearchMovie: async (query: string) => {
     if (query === '') return
-    const { lang } = useUserStore.getState()
-    const queryString = getQueryString({ lang, query, page: 1 }) // @todo: handle page
-    const url = `/api/movie/search${queryString}`
+    const queryString = getQueryString({
+      ...get().computed.defaultQueries,
+      query,
+      page: 1,
+    }) // @todo: handle page
+    const url = `/api/search${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     set({ movieList: data.results })
   },
-  genreById: () =>
-    get().movieGenres.reduce((prev, el) => ({ ...prev, [el.id]: el.name }), {}),
+
+  computed: {
+    get genreById() {
+      return get().movieGenres.reduce(
+        (prev, el) => ({ ...prev, [el.id]: el.name }),
+        {},
+      )
+    },
+    get defaultQueries() {
+      const { lang } = useUserStore.getState()
+      return { media: 'movie', lang }
+    },
+  },
 }))
 
 export default useMovieStore

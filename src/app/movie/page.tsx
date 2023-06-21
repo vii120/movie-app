@@ -8,11 +8,15 @@ import { getImgFullPath } from '@/lib/utils/helpers'
 export default function Movie() {
   const { movieList, fetchTrendingMovie, fetchMovieGenres, onSearchMovie } =
     useMovieStore()
-  const genreById = useMovieStore((state) => state.genreById())
+  const genreById = useMovieStore((state) => state.computed?.genreById)
 
   useEffect(() => {
-    fetchTrendingMovie()
-    fetchMovieGenres()
+    if (movieList.length === 0) {
+      fetchTrendingMovie()
+    }
+    if (Object.keys(genreById).length === 0) {
+      fetchMovieGenres()
+    }
   }, [])
 
   return (

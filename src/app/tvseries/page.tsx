@@ -12,11 +12,15 @@ export default function Movie() {
     fetchTvseriesGenres,
     onSearchTvseries,
   } = useTvseriesStore()
-  const genreById = useTvseriesStore((state) => state.genreById())
+  const genreById = useTvseriesStore((state) => state.computed.genreById)
 
   useEffect(() => {
-    fetchTrendingTvseries()
-    fetchTvseriesGenres()
+    if (tvseriesList.length === 0) {
+      fetchTrendingTvseries()
+    }
+    if (Object.keys(genreById).length === 0) {
+      fetchTvseriesGenres()
+    }
   }, [])
 
   return (

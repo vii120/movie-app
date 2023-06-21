@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getQueryString } from '@/lib/utils/helpers'
-import { mockData } from './mockData'
+import { movieMockData } from './movieMockData'
+import { tvseriesMockData } from './tvseriesMockData'
 
-const PREFIX_URL = 'https://api.themoviedb.org/3/trending/tv'
 const isProd = process.env.NODE_ENV === 'production'
 
 export async function GET(request: NextRequest) {
@@ -10,6 +10,9 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') || 'week'
   const language = searchParams.get('lang') || 'en-US'
   const page = searchParams.get('page') || 1
+  const mediaType = searchParams.get('media') || 'all'
+
+  const PREFIX_URL = `https://api.themoviedb.org/3/trending/${mediaType}`
 
   const data = await (async () => {
     if (isProd) {
@@ -22,7 +25,9 @@ export async function GET(request: NextRequest) {
       })
       return await res.json()
     }
-    return mockData(Number(page))
+    return mediaType === 'movie'
+      ? movieMockData(Number(page))
+      : tvseriesMockData(Number(page))
   })()
 
   return NextResponse.json({ data })

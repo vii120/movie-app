@@ -1,4 +1,4 @@
-export const mockData = (page = 1) => ({
+export const tvseriesMockData = (page = 1) => ({
   page,
   results: [
     {
