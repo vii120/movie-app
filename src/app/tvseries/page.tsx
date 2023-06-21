@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import styled from 'styled-components'
 import { useTvseriesStore } from '@/lib/store'
 import { getImgFullPath } from '@/lib/utils/helpers'
@@ -24,26 +23,43 @@ export default function Movie() {
   }, [])
 
   return (
-    <>
-      {tvseriesList.map((movie) => {
-        const year = new Date(movie.first_air_date).getFullYear()
+    <Container>
+      {tvseriesList.map((tvseries) => {
+        const year = new Date(tvseries.first_air_date).getFullYear()
         return (
-          <div key={movie.id}>
+          <Card key={tvseries.id} data-id={tvseries.id}>
             <div>
-              {movie.name} ({year}) - {movie.vote_average.toFixed(1)}/10
+              {tvseries.name} ({year})
             </div>
-            <div>{movie.genre_ids.map((id) => genreById[id]).join(', ')}</div>
-            <Image
-              src={getImgFullPath(movie.poster_path)}
-              alt={movie.name}
+            <div>{tvseries.vote_average.toFixed(1)}/10</div>
+            <div>
+              {tvseries.genre_ids.map((id) => genreById[id]).join(', ')}
+            </div>
+            <Poster
+              src={getImgFullPath(tvseries.poster_path)}
+              alt={tvseries.name}
               crossOrigin="anonymous"
-              width={500 * 0.6}
-              height={750 * 0.6}
-              style={{ position: 'relative', objectFit: 'contain' }}
             />
-          </div>
+          </Card>
         )
       })}
-    </>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  padding: 12px 36px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+`
+
+const Card = styled.div`
+  width: 30%;
+`
+
+const Poster = styled.img`
+  display: block;
+  width: 100%;
+`
