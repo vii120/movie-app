@@ -1,17 +1,28 @@
 'use client'
-import { useEffect } from 'react'
-import { useUserStore } from '@/lib/store'
+import React, { useState } from 'react'
+import { useServerInsertedHTML } from 'next/navigation'
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+
 import { register } from 'swiper/element/bundle'
 import 'swiper/swiper.min.css'
 register()
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  // const { updateLang } = useUserStore()
-  // const isInit = useUserStore((state) => state.isInit())
+  // Only create stylesheet once with lazy initial state
+  // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
 
-  // useEffect(() => {
-  //   updateLang(navigator?.language ?? '')
-  // }, [])
+  useServerInsertedHTML(() => {
+    const styles = styledComponentsStyleSheet.getStyleElement()
+    styledComponentsStyleSheet.instance.clearTag()
+    return <>{styles}</>
+  })
 
-  return <>{children}</>
+  if (typeof window !== 'undefined') return <>{children}</>
+
+  return (
+    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
+      {children}
+    </StyleSheetManager>
+  )
 }

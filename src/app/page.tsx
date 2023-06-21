@@ -29,7 +29,7 @@ export default function Home() {
         <Button>explore</Button>
       </TitleWrapper>
 
-      {movieList.length && (
+      {!!movieList.length && (
         <SwiperWrapper>
           <Swiper
             style={{ width: '100%', height: '100%' }}
@@ -58,7 +58,7 @@ export default function Home() {
 }
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   min-height: 80vh;
   margin: 0 auto;
   padding: 24px 36px;
@@ -72,7 +72,7 @@ const Container = styled.div`
 `
 
 const TitleWrapper = styled.div`
-  max-width: 600px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -89,7 +89,7 @@ const Description = styled.div`
 `
 
 const SwiperWrapper = styled.div`
-  width: 300px;
+  width: 320px;
   margin-right: 50px; // slider overflow space
   @media screen and (${DEVICES.md}) {
     margin-right: 0;
