@@ -1,16 +1,27 @@
 'use client'
-import Image from 'next/image'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from '@/components/Button'
+import { useMovieStore } from '@/lib/store'
+import { getImgFullPath } from '@/lib/utils/helpers'
+import { DEVICES } from '@/lib/utils/constants'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectCards } from 'swiper'
 import 'swiper/css/effect-cards'
 
 export default function Home() {
+  const { movieList, fetchTrendingMovie } = useMovieStore()
+
+  useEffect(() => {
+    if (movieList.length === 0) {
+      fetchTrendingMovie()
+    }
+  }, [])
+
   return (
     <Container>
       <TitleWrapper>
-        <Title>The Movie Planet</Title>
+        <Title>Movie Planet</Title>
         <Description>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium,
           repudiandae!
@@ -18,37 +29,46 @@ export default function Home() {
         <Button>explore</Button>
       </TitleWrapper>
 
-      <SwiperWrapper>
-        <Swiper
-          style={{ width: '100%', height: '100%' }}
-          effect={'cards'}
-          grabCursor={true}
-          modules={[EffectCards]}
-          loop={true}
-          // peek prev/next slide
-          slidesPerView={1.1}
-          centeredSlides={true}
-        >
-          {Array.from(Array(5)).map((_, i) => (
-            <SwiperSlide key={i}>
-              <Card> slide {i}</Card>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </SwiperWrapper>
+      {movieList.length && (
+        <SwiperWrapper>
+          <Swiper
+            style={{ width: '100%', height: '100%' }}
+            effect={'cards'}
+            grabCursor={true}
+            modules={[EffectCards]}
+            loop={true}
+            // peek prev/next slide
+            slidesPerView={1.1}
+            centeredSlides={true}
+          >
+            {movieList.slice(0, 5).map((movie, i) => (
+              <SwiperSlide key={i}>
+                <SlidePoster
+                  src={getImgFullPath(movie.poster_path)}
+                  alt={movie.title}
+                  crossOrigin="anonymous"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </SwiperWrapper>
+      )}
     </Container>
   )
 }
 
 const Container = styled.div`
   max-width: 1200px;
-  height: 80vh;
+  min-height: 80vh;
   margin: 0 auto;
   padding: 24px 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 36px;
+  @media screen and (${DEVICES.md}) {
+    flex-direction: column;
+  }
 `
 
 const TitleWrapper = styled.div`
@@ -70,15 +90,21 @@ const Description = styled.div`
 
 const SwiperWrapper = styled.div`
   width: 300px;
-  height: 420px;
-  margin-right: 50px;
+  margin-right: 50px; // slider overflow space
+  @media screen and (${DEVICES.md}) {
+    margin-right: 0;
+  }
+  .swiper-slide {
+    filter: brightness(0.6);
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+  .swiper-slide-active {
+    filter: none;
+  }
 `
 
-const Card = styled.div`
-  height: 100%;
-  background: orange;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const SlidePoster = styled.img`
+  display: block;
+  width: 100%;
 `
