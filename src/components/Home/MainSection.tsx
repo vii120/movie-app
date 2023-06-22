@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@/components/Button'
 import { useMovieStore } from '@/lib/store'
@@ -10,6 +10,8 @@ import { EffectCards } from 'swiper'
 import 'swiper/css/effect-cards'
 
 export const MainSection = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
   const { movieList, fetchTrendingMovie } = useMovieStore()
 
   useEffect(() => {
@@ -17,8 +19,7 @@ export const MainSection = () => {
       fetchTrendingMovie()
     }
     const handleMouseMove = (e: MouseEvent) => {
-      document.documentElement.style.setProperty('--x', e.pageX + 'px')
-      document.documentElement.style.setProperty('--y', e.pageY + 'px')
+      setMousePosition({ x: e.pageX, y: e.pageY })
     }
     window.addEventListener('mousemove', handleMouseMove)
     return () => {
@@ -27,7 +28,14 @@ export const MainSection = () => {
   }, [])
 
   return (
-    <Container>
+    <Container
+      style={
+        {
+          '--x': mousePosition.x + 'px',
+          '--y': mousePosition.y + 'px',
+        } as React.CSSProperties
+      }
+    >
       <Background />
       <ContainerInner>
         <TitleWrapper>
@@ -131,10 +139,16 @@ const Title = styled.h1`
   span {
     display: inline-block;
     border-radius: 36px;
-    border: 1px solid;
+    border: 1px solid var(--secondary-color);
     padding: 0 16px;
     color: var(--secondary-color);
-    white-space: nowrap;
+    transition: all 0.2s;
+    cursor: crosshair;
+    will-change: color, background-color;
+    &:hover {
+      color: var(--primary-bg);
+      background-color: var(--secondary-color);
+    }
   }
   @media screen and (${DEVICES.md}) {
     font-size: 28px;

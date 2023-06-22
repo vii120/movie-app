@@ -2,11 +2,13 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import { MainSection } from '@/components/Home/MainSection'
+import { Showcase } from '@/components/Home/Showcase'
 
 export default function Home() {
   return (
     <Container>
       <MainSection />
+      <Showcase />
       <div style={{ lineHeight: 5 }}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, sed.
         Earum molestiae delectus natus obcaecati suscipit quibusdam quaerat

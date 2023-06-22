@@ -76,6 +76,11 @@ const Container = styled.div`
     padding: 6px 12px;
     display: flex;
     align-items: center;
+    transition: all 0.3s;
+    will-change: transform;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 `
 const Logo = styled(Link)`
