@@ -43,6 +43,7 @@ export default function Movie() {
 
 const Container = styled.div`
   padding: 12px 36px;
+  margin-top: 100px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -51,6 +52,7 @@ const Container = styled.div`
 
 const Card = styled.div`
   width: 30%;
+  padding: 24px;
 `
 
 const Poster = styled.img`

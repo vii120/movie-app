@@ -1,11 +1,11 @@
 import { create } from 'zustand'
-import { TvseriesListType, TvseriesGenreType } from '@/lib/types'
+import { TvseriesItemType, TvseriesGenreType } from '@/lib/types'
 import { useUserStore } from '@/lib/store'
 import { getQueryString } from '@/lib/utils/helpers'
 
 type TvseriesState = {
   tvseriesPage: number
-  tvseriesList: TvseriesListType[]
+  tvseriesList: TvseriesItemType[]
   tvseriesGenres: TvseriesGenreType[]
   fetchTrendingTvseries: () => void
   fetchTvseriesGenres: () => void

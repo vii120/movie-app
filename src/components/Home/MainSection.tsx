@@ -31,11 +31,10 @@ export const MainSection = () => {
       <Background />
       <ContainerInner>
         <TitleWrapper>
-          <Title>Movie Planet</Title>
-          <Description>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Praesentium, repudiandae!
-          </Description>
+          <Title>
+            Get ready to embark on a <span>cinematic adventure</span> like no
+            other
+          </Title>
           <Button>explore</Button>
         </TitleWrapper>
         {!!movieList.length && (
@@ -75,7 +74,7 @@ const Container = styled.div`
 
 const ContainerInner = styled.div`
   max-width: 1100px;
-  min-height: 80vh;
+  min-height: 85vh;
   margin: 0 auto;
 
   display: flex;
@@ -84,6 +83,7 @@ const ContainerInner = styled.div`
   gap: 36px;
   @media screen and (${DEVICES.md}) {
     flex-direction: column;
+    margin-bottom: 100px;
   }
 `
 
@@ -104,26 +104,41 @@ const Background = styled.div`
     );
   background-repeat: repeat, no-repeat;
   background-size: 30px 30px, auto;
-  /* mask: linear-gradient(#fff0, black 10% 90%, #fff0);
-  -webkit-mask: linear-gradient(#fff0, black 10% 90%, #fff0); */
+  mask: linear-gradient(black 0% 90%, #fff0);
+  -webkit-mask: linear-gradient(black 0% 90%, #fff0);
   will-change: background-image;
 `
 
 const TitleWrapper = styled.div`
-  width: 500px;
+  width: 650px;
   display: flex;
   flex-direction: column;
   gap: 24px;
   align-items: flex-start;
+  @media screen and (${DEVICES.md}) {
+    width: auto;
+    flex-direction: column;
+    margin-top: 100px;
+    text-align: center;
+  }
 `
 
 const Title = styled.h1`
-  font-family: 'Poppins', sans-serif;
   font-weight: 900;
-  font-size: 60px;
-`
-const Description = styled.div`
-  line-height: 1.5;
+  font-size: 36px;
+  text-wrap: balance;
+  line-height: 1.7;
+  span {
+    display: inline-block;
+    border-radius: 36px;
+    border: 1px solid;
+    padding: 0 16px;
+    color: var(--secondary-color);
+    white-space: nowrap;
+  }
+  @media screen and (${DEVICES.md}) {
+    font-size: 28px;
+  }
 `
 
 const SwiperWrapper = styled.div`

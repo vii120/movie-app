@@ -1,4 +1,4 @@
-export type MovieListType = {
+export type MovieItemType = {
   id: number
   title: string
   original_title: string
@@ -16,7 +16,7 @@ export type MovieGenreType = {
   name: string
 }
 
-export type TvseriesListType = {
+export type TvseriesItemType = {
   id: number
   name: string
   original_name: string
