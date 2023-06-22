@@ -32,7 +32,7 @@ export const MainSection = () => {
       <ContainerInner>
         <TitleWrapper>
           <Title>
-            Get ready to embark on a <span>cinematic adventure</span> like no
+            Get ready to embark on a cinematic <span>adventure</span> like no
             other
           </Title>
           <Button>explore</Button>

@@ -2,10 +2,13 @@
 import { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export const Navbar = () => {
   const [isPageOnTop, setIsPageOnTop] = useState(true)
   const navbarObserverRef = useRef<HTMLDivElement>(null)
+  const currentRoute = usePathname()
+
   const handleNavbarStyle = () => {
     if (!navbarObserverRef.current) return
     const observer = new IntersectionObserver(([entry]) => {
@@ -23,15 +26,25 @@ export const Navbar = () => {
       <div ref={navbarObserverRef}></div>
       <Container className={isPageOnTop ? '' : 'highlight'}>
         <Logo href="/">MOVIE PLANET</Logo>
-        <Link href="/movie">Movie</Link>
-        <Link href="/tvseries">TV Series</Link>
-        <Link
+        <NavLink
+          href="/movie"
+          className={currentRoute === '/movie' ? 'active' : ''}
+        >
+          Movie
+        </NavLink>
+        <NavLink
+          href="/tvseries"
+          className={currentRoute === '/tvseries' ? 'active' : ''}
+        >
+          TV Series
+        </NavLink>
+        <NavLink
           href="https://github.com/vii120/movie-app"
           target="_blank"
           rel="noopener"
         >
           Github
-        </Link>
+        </NavLink>
       </Container>
     </>
   )
@@ -67,4 +80,23 @@ const Container = styled.div`
 `
 const Logo = styled(Link)`
   margin-right: auto;
+`
+
+const NavLink = styled(Link)`
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 60%;
+    height: 2px;
+    margin-bottom: 10px;
+    transform: translateX(-50%) scale(0);
+    background-color: currentColor;
+    transition: all 0.3s;
+  }
+  &.active:before {
+    transform: translateX(-50%) scale(1);
+  }
 `
