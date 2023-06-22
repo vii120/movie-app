@@ -82,9 +82,8 @@ const Container = styled.div`
 
 const ContainerInner = styled.div`
   max-width: 1100px;
-  min-height: 85vh;
+  min-height: 90vh;
   margin: 0 auto;
-  margin-bottom: 50px;
 
   display: flex;
   justify-content: space-between;
@@ -127,7 +126,6 @@ const TitleWrapper = styled.div`
   @media screen and (${DEVICES.md}) {
     width: auto;
     flex-direction: column;
-    margin-top: 100px;
     text-align: center;
   }
 `

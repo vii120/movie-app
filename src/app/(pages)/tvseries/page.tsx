@@ -48,7 +48,6 @@ export default function Movie() {
 }
 
 const Container = styled.div`
-  margin-top: 100px;
   padding: 12px 36px;
   display: flex;
   justify-content: center;

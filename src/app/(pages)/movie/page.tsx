@@ -5,15 +5,19 @@ import { useMovieStore } from '@/lib/store'
 import { getImgFullPath } from '@/lib/utils/helpers'
 
 export default function Movie() {
-  const { movieList, fetchTrendingMovie, fetchMovieGenres, onSearchMovie } =
-    useMovieStore()
-  const genreById = useMovieStore((state) => state.computed?.genreById)
+  const {
+    movieList,
+    movieGenres,
+    fetchTrendingMovie,
+    fetchMovieGenres,
+    onSearchMovie,
+  } = useMovieStore()
 
   useEffect(() => {
     if (movieList.length === 0) {
       fetchTrendingMovie()
     }
-    if (Object.keys(genreById).length === 0) {
+    if (movieGenres.length === 0) {
       fetchMovieGenres()
     }
   }, [])
@@ -28,7 +32,6 @@ export default function Movie() {
               {movie.title} ({year})
             </div>
             <div>{movie.vote_average.toFixed(1)}/10</div>
-            <div>{movie.genre_ids.map((id) => genreById[id]).join(', ')}</div>
             <Poster
               src={getImgFullPath(movie.poster_path)}
               alt={movie.title}
@@ -43,7 +46,6 @@ export default function Movie() {
 
 const Container = styled.div`
   padding: 12px 36px;
-  margin-top: 100px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
