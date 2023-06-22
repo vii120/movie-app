@@ -84,6 +84,7 @@ const ContainerInner = styled.div`
   max-width: 1100px;
   min-height: 85vh;
   margin: 0 auto;
+  margin-bottom: 50px;
 
   display: flex;
   justify-content: space-between;
