@@ -16,15 +16,27 @@ export const SearchBar = () => {
   }
   return (
     <Container>
-      <div style={{ margin: '24px 0' }}>
-        <input
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={onSearch}
-        />
-      </div>
+      <Input
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+        onKeyDown={onSearch}
+      />
     </Container>
   )
 }
 
 const Container = styled.div``
+
+const Input = styled.input`
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: 24px;
+  font-family: inherit;
+  &:focus {
+    outline: none;
+  }
+`

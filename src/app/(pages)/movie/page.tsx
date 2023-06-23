@@ -2,7 +2,10 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
-import { getImgFullPath } from '@/lib/utils/helpers'
+import { DEVICES } from '@/lib/utils/constants'
+import { InfoCard } from '@/components/InfoCard'
+import { GenreTag } from '@/components/GenreTag'
+import { SearchBar } from '@/components/SearchBar'
 
 export default function Movie() {
   const {
@@ -24,40 +27,68 @@ export default function Movie() {
 
   return (
     <Container>
-      {movieList.map((movie) => {
-        const year = new Date(movie.release_date).getFullYear()
-        return (
-          <Card key={movie.id}>
-            <div>
-              {movie.title} ({year})
-            </div>
-            <div>{movie.vote_average.toFixed(1)}/10</div>
-            <Poster
-              src={getImgFullPath(movie.poster_path)}
-              alt={movie.title}
-              crossOrigin="anonymous"
+      <SearchArea>
+        <SearchBar />
+        <GenreList>
+          {movieGenres.map((genre) => (
+            <GenreTag key={genre.id}>{genre.name}</GenreTag>
+          ))}
+        </GenreList>
+      </SearchArea>
+      <CardList>
+        {movieList.map((movie) => {
+          return (
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              name={movie.title}
+              date={movie.release_date}
+              rating={movie.vote_average}
+              posterPath={movie.poster_path}
             />
-          </Card>
-        )
-      })}
+          )
+        })}
+      </CardList>
     </Container>
   )
 }
 
 const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 12px 36px;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 36px;
+  @media screen and (${DEVICES.md}) {
+    flex-direction: column;
+  }
+`
+
+const SearchArea = styled.div`
+  width: 250px;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
+  flex-shrink: 0;
+  @media screen and (${DEVICES.md}) {
+    width: auto;
+  }
 `
 
-const Card = styled.div`
-  width: 30%;
-  padding: 24px;
+const GenreList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 `
 
-const Poster = styled.img`
-  display: block;
-  width: 100%;
+const CardList = styled.div`
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 24px 36px;
 `
+
+const MovieCard = styled(InfoCard)``
