@@ -33,7 +33,7 @@ const Input = styled.input`
   border: none;
 
   width: 100%;
-  padding: 6px 12px;
+  padding: 12px 18px;
   border-radius: 24px;
   font-family: inherit;
   &:focus {

@@ -6,6 +6,7 @@ import { getQueryString } from '@/lib/utils/helpers'
 type MovieState = {
   moviePage: number
   movieList: MovieItemType[]
+  movieSearchList: MovieItemType[]
   movieGenres: MovieGenreType[]
   fetchTrendingMovie: () => void
   fetchMovieGenres: () => void
@@ -19,6 +20,7 @@ type MovieState = {
 export const useMovieStore = create<MovieState>((set, get) => ({
   moviePage: 0,
   movieList: [],
+  movieSearchList: [],
   movieGenres: [],
   searchPage: 0,
   fetchTrendingMovie: async () => {
@@ -49,7 +51,7 @@ export const useMovieStore = create<MovieState>((set, get) => ({
     const url = `/api/search${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
-    set({ movieList: data.results })
+    set({ movieSearchList: data.results })
   },
 
   computed: {

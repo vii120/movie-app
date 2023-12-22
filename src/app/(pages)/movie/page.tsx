@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
+
+import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
 import { DEVICES } from '@/lib/utils/constants'
@@ -10,11 +11,18 @@ import { SearchBar } from '@/components/SearchBar'
 export default function Movie() {
   const {
     movieList,
+    movieSearchList,
     movieGenres,
     fetchTrendingMovie,
     fetchMovieGenres,
-    onSearchMovie,
   } = useMovieStore()
+
+  const list = useMemo(() => {
+    if (movieSearchList.length) {
+      return movieSearchList
+    }
+    return movieList
+  }, [movieList, movieSearchList])
 
   useEffect(() => {
     if (movieList.length === 0) {
@@ -36,7 +44,7 @@ export default function Movie() {
         </GenreList>
       </SearchArea>
       <CardList>
-        {movieList.map((movie) => {
+        {list.map((movie) => {
           return (
             <MovieCard
               key={movie.id}
@@ -87,7 +95,6 @@ const CardList = styled.div`
   max-width: 800px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
   gap: 24px 36px;
 `
 
