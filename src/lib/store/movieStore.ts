@@ -1,10 +1,8 @@
 import { create } from 'zustand'
 import { MovieItemType, GenreType } from '@/lib/types'
-import { useUserStore, useApiStore } from '@/lib/store'
-import { getQueryString } from '@/lib/utils/helpers'
+import { useApiStore } from '@/lib/store'
 
 type MovieState = {
-  moviePage: number
   movieList: MovieItemType[]
   movieSearchList: MovieItemType[]
   movieGenres: GenreType[]
@@ -15,12 +13,10 @@ type MovieState = {
 
   computed: {
     genreById: Record<number, string>
-    defaultQueries: Record<string, string>
   }
 }
 
 export const useMovieStore = create<MovieState>((set, get) => ({
-  moviePage: 0,
   movieList: [],
   movieSearchList: [],
   movieGenres: [],
@@ -29,30 +25,18 @@ export const useMovieStore = create<MovieState>((set, get) => ({
     if (get().movieList.length) {
       return
     }
-    const queryString = getQueryString({
-      ...get().computed.defaultQueries,
-      type: 'week',
-    })
-    const res = await useApiStore.getState().fetchTrending(queryString)
-    set((state) => ({
-      movieList: [...state.movieList, ...res.results],
-      moviePage: res.page,
-    }))
+    const res = await useApiStore.getState().fetchTrending({ media: 'movie' })
+    set({ movieList: res.results })
   },
   fetchMovieGenres: async () => {
     if (get().movieGenres.length) {
       return
     }
-    const queryString = getQueryString(get().computed.defaultQueries)
-    const res = await useApiStore.getState().fetchGenres(queryString)
+    const res = await useApiStore.getState().fetchGenres({ media: 'movie' })
     set({ movieGenres: res.genres })
   },
   onSearchMovie: async (genre) => {
-    const queryString = getQueryString({
-      ...get().computed.defaultQueries,
-      genre,
-    })
-    const res = await useApiStore.getState().onSearch(queryString)
+    const res = await useApiStore.getState().onSearch({ media: 'movie', genre })
     set({ movieSearchList: res.results })
   },
 
@@ -62,10 +46,6 @@ export const useMovieStore = create<MovieState>((set, get) => ({
         (prev, el) => ({ ...prev, [el.id]: el.name }),
         {},
       )
-    },
-    get defaultQueries() {
-      const { lang } = useUserStore.getState()
-      return { media: 'movie', lang }
     },
   },
 }))

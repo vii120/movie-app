@@ -1,10 +1,8 @@
 import { create } from 'zustand'
 import { TvseriesItemType, TvseriesGenreType } from '@/lib/types'
-import { useUserStore, useApiStore } from '@/lib/store'
-import { getQueryString } from '@/lib/utils/helpers'
+import { useApiStore } from '@/lib/store'
 
 type TvseriesState = {
-  tvseriesPage: number
   tvseriesList: TvseriesItemType[]
   tvseriesGenres: TvseriesGenreType[]
 
@@ -14,38 +12,24 @@ type TvseriesState = {
 
   computed: {
     genreById: Record<number, string>
-    defaultQueries: Record<string, string>
   }
 }
 
 export const useTvseriesStore = create<TvseriesState>((set, get) => ({
-  tvseriesPage: 0,
   tvseriesList: [],
   tvseriesGenres: [],
   searchPage: 0,
   fetchTrendingTvseries: async () => {
-    const queryString = getQueryString({
-      ...get().computed.defaultQueries,
-      type: 'week',
-    })
-    const res = await useApiStore.getState().fetchTrending(queryString)
-    set((state) => ({
-      tvseriesList: [...state.tvseriesList, ...res.results],
-      tvseriesPage: res.page,
-    }))
+    const res = await useApiStore.getState().fetchTrending({ media: 'tv' })
+    set({ tvseriesList: res.results })
   },
   fetchTvseriesGenres: async () => {
-    const queryString = getQueryString({ ...get().computed.defaultQueries })
-    const res = await useApiStore.getState().fetchGenres(queryString)
+    const res = await useApiStore.getState().fetchGenres({ media: 'tv' })
 
     set({ tvseriesGenres: res.genres })
   },
   onSearchTvseries: async (genre) => {
-    const queryString = getQueryString({
-      ...get().computed.defaultQueries,
-      genre,
-    }) // @todo: handle page
-    const res = await useApiStore.getState().onSearch(queryString)
+    const res = await useApiStore.getState().onSearch({ media: 'tv', genre })
     set({ tvseriesList: res.results })
   },
   computed: {
@@ -54,10 +38,6 @@ export const useTvseriesStore = create<TvseriesState>((set, get) => ({
         (prev, el) => ({ ...prev, [el.id]: el.name }),
         {},
       )
-    },
-    get defaultQueries() {
-      const { lang } = useUserStore.getState()
-      return { media: 'tv', lang }
     },
   },
 }))

@@ -1,26 +1,27 @@
 import { create } from 'zustand'
+import { getQueryString } from '@/lib/utils/helpers'
 
 type Action = {
-  fetchTrending: (queryString: string) => any
-  fetchGenres: (queryString: string) => any
-  onSearch: (queryString: string) => any
+  fetchTrending: (query: Record<string, any>) => any
+  fetchGenres: (query: Record<string, any>) => any
+  onSearch: (query: Record<string, any>) => any
 }
 
 export const useApiStore = create<Action>((set, get) => ({
-  fetchTrending: async (queryString) => {
-    const url = `/api/trending${queryString}`
+  fetchTrending: async (query) => {
+    const url = `/api/trending${getQueryString(query)}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     return data
   },
-  fetchGenres: async (queryString) => {
-    const url = `/api/genre${queryString}`
+  fetchGenres: async (query) => {
+    const url = `/api/genre${getQueryString(query)}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     return data
   },
-  onSearch: async (queryString) => {
-    const url = `/api/discover${queryString}`
+  onSearch: async (query) => {
+    const url = `/api/discover${getQueryString(query)}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     return data
