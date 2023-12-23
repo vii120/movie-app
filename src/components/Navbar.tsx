@@ -10,7 +10,9 @@ export const Navbar = () => {
   const currentRoute = usePathname()
 
   const handleNavbarStyle = () => {
-    if (!navbarObserverRef.current) return
+    if (!navbarObserverRef.current) {
+      return
+    }
     const observer = new IntersectionObserver(([entry]) => {
       setIsPageOnTop(entry.isIntersecting)
     })

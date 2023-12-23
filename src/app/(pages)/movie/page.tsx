@@ -25,12 +25,8 @@ export default function Movie() {
   }, [movieList, movieSearchList])
 
   useEffect(() => {
-    if (movieList.length === 0) {
-      fetchTrendingMovie()
-    }
-    if (movieGenres.length === 0) {
-      fetchMovieGenres()
-    }
+    fetchTrendingMovie()
+    fetchMovieGenres()
   }, [])
 
   return (

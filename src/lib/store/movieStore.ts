@@ -26,6 +26,9 @@ export const useMovieStore = create<MovieState>((set, get) => ({
   movieGenres: [],
   searchPage: 0,
   fetchTrendingMovie: async () => {
+    if (get().movieList.length) {
+      return
+    }
     const queryString = getQueryString({
       ...get().computed.defaultQueries,
       type: 'week',
@@ -37,6 +40,9 @@ export const useMovieStore = create<MovieState>((set, get) => ({
     }))
   },
   fetchMovieGenres: async () => {
+    if (get().movieGenres.length) {
+      return
+    }
     const queryString = getQueryString(get().computed.defaultQueries)
     const res = await useApiStore.getState().fetchGenres(queryString)
     set({ movieGenres: res.genres })
