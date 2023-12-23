@@ -1,66 +1,79 @@
 'use client'
-import { useEffect, useState } from 'react'
+
+import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useTvseriesStore } from '@/lib/store'
-import { getImgFullPath } from '@/lib/utils/helpers'
+import { DEVICES } from '@/lib/utils/constants'
+import { InfoCard } from '@/components/InfoCard'
+import { GenreGroup } from '@/components/GenreGroup'
 
 export default function Movie() {
   const {
     tvseriesList,
+    tvseriesSearchList,
+    tvseriesGenres,
     fetchTrendingTvseries,
     fetchTvseriesGenres,
     onSearchTvseries,
   } = useTvseriesStore()
-  const genreById = useTvseriesStore((state) => state.computed.genreById)
+
+  const list = useMemo(() => {
+    if (tvseriesSearchList?.length) {
+      return tvseriesSearchList
+    }
+    return tvseriesList
+  }, [tvseriesList, tvseriesSearchList])
 
   useEffect(() => {
-    if (tvseriesList.length === 0) {
-      fetchTrendingTvseries()
-    }
-    if (Object.keys(genreById).length === 0) {
-      fetchTvseriesGenres()
-    }
+    fetchTrendingTvseries()
+    fetchTvseriesGenres()
   }, [])
 
   return (
     <Container>
-      {tvseriesList.map((tvseries) => {
-        const year = new Date(tvseries.first_air_date).getFullYear()
-        return (
-          <Card key={tvseries.id} data-id={tvseries.id}>
-            <div>
-              {tvseries.name} ({year})
-            </div>
-            <div>{tvseries.vote_average.toFixed(1)}/10</div>
-            <div>
-              {tvseries.genre_ids.map((id) => genreById[id]).join(', ')}
-            </div>
-            <Poster
-              src={getImgFullPath(tvseries.poster_path)}
-              alt={tvseries.name}
-              crossOrigin="anonymous"
+      <GenreGroup
+        genreList={tvseriesGenres}
+        onClick={(id) => onSearchTvseries(id)}
+      />
+      <CardList>
+        {list.map((series) => {
+          return (
+            <Card
+              key={series.id}
+              id={series.id}
+              name={series.name}
+              date={series.first_air_date}
+              rating={series.vote_average}
+              posterPath={series.poster_path}
             />
-          </Card>
-        )
-      })}
+          )
+        })}
+      </CardList>
     </Container>
   )
 }
 
 const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 12px 36px;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 24px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 36px;
+  @media screen and (${DEVICES.md}) {
+    flex-direction: column;
+  }
 `
 
-const Card = styled.div`
-  width: 30%;
-  padding: 24px;
+const CardList = styled.div`
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 36px;
+  @media screen and (${DEVICES.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
-const Poster = styled.img`
-  display: block;
-  width: 100%;
-`
+const Card = styled(InfoCard)``

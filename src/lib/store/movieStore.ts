@@ -20,7 +20,7 @@ export const useMovieStore = create<MovieState>((set, get) => ({
   movieList: [],
   movieSearchList: [],
   movieGenres: [],
-  searchPage: 0,
+
   fetchTrendingMovie: async () => {
     if (get().movieList.length) {
       return

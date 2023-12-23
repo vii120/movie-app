@@ -35,7 +35,7 @@ export default function Movie() {
       <CardList>
         {list.map((movie) => {
           return (
-            <MovieCard
+            <Card
               key={movie.id}
               id={movie.id}
               name={movie.title}
@@ -73,4 +73,4 @@ const CardList = styled.div`
   }
 `
 
-const MovieCard = styled(InfoCard)``
+const Card = styled(InfoCard)``

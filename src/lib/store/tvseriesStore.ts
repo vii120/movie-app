@@ -4,6 +4,7 @@ import { useApiStore } from '@/lib/store'
 
 type TvseriesState = {
   tvseriesList: TvseriesItemType[]
+  tvseriesSearchList: TvseriesItemType[]
   tvseriesGenres: TvseriesGenreType[]
 
   fetchTrendingTvseries: () => void
@@ -17,21 +18,28 @@ type TvseriesState = {
 
 export const useTvseriesStore = create<TvseriesState>((set, get) => ({
   tvseriesList: [],
+  tvseriesSearchList: [],
   tvseriesGenres: [],
-  searchPage: 0,
+
   fetchTrendingTvseries: async () => {
+    if (get().tvseriesList.length) {
+      return
+    }
     const res = await useApiStore.getState().fetchTrending({ media: 'tv' })
     set({ tvseriesList: res.results })
   },
   fetchTvseriesGenres: async () => {
+    if (get().tvseriesGenres.length) {
+      return
+    }
     const res = await useApiStore.getState().fetchGenres({ media: 'tv' })
-
     set({ tvseriesGenres: res.genres })
   },
   onSearchTvseries: async (genre) => {
     const res = await useApiStore.getState().onSearch({ media: 'tv', genre })
     set({ tvseriesList: res.results })
   },
+
   computed: {
     get genreById() {
       return get().tvseriesGenres.reduce(
