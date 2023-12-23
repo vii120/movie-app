@@ -8,9 +8,11 @@ type MovieState = {
   movieList: MovieItemType[]
   movieSearchList: MovieItemType[]
   movieGenres: MovieGenreType[]
+
   fetchTrendingMovie: () => void
   fetchMovieGenres: () => void
-  onSearchMovie: (query: string) => void
+  onSearchMovie: (data: { query?: string; genre?: number }) => void
+
   computed: {
     genreById: Record<number, string>
     defaultQueries: Record<string, string>
@@ -41,14 +43,15 @@ export const useMovieStore = create<MovieState>((set, get) => ({
     const { data } = await res.json()
     set({ movieGenres: data.genres })
   },
-  onSearchMovie: async (query: string) => {
+  onSearchMovie: async ({ query, genre }) => {
     if (query === '') return
     const queryString = getQueryString({
       ...get().computed.defaultQueries,
       query,
+      genre,
       page: 1,
     }) // @todo: handle page
-    const url = `/api/search${queryString}`
+    const url = `/api/discover${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     set({ movieSearchList: data.results })

@@ -15,6 +15,7 @@ export default function Movie() {
     movieGenres,
     fetchTrendingMovie,
     fetchMovieGenres,
+    onSearchMovie,
   } = useMovieStore()
 
   const list = useMemo(() => {

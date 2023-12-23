@@ -9,9 +9,9 @@ export const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('')
 
   const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const input = searchInput.trim()
-    if (e.key === 'Enter' && input !== '') {
-      onSearchMovie(input)
+    const query = searchInput.trim()
+    if (e.key === 'Enter' && query !== '') {
+      onSearchMovie({ query })
     }
   }
   return (

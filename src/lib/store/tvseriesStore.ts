@@ -46,7 +46,7 @@ export const useTvseriesStore = create<TvseriesState>((set, get) => ({
       query,
       page: 1,
     }) // @todo: handle page
-    const url = `/api/search${queryString}`
+    const url = `/api/discover${queryString}`
     const res = await fetch(url, { method: 'GET' })
     const { data } = await res.json()
     set({ tvseriesList: data.results })
