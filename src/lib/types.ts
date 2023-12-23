@@ -11,7 +11,7 @@ export type MovieItemType = {
   original_language: string
 }
 
-export type MovieGenreType = {
+export type GenreType = {
   id: number
   name: string
 }

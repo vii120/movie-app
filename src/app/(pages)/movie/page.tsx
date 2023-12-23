@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
 import { DEVICES } from '@/lib/utils/constants'
 import { InfoCard } from '@/components/InfoCard'
-import { GenreTag } from '@/components/GenreTag'
 import { SearchBar } from '@/components/SearchBar'
+import { GenreGroup } from '@/components/GenreGroup'
 
 export default function Movie() {
   const {
@@ -38,11 +38,7 @@ export default function Movie() {
     <Container>
       <SearchArea>
         <SearchBar />
-        <GenreList>
-          {movieGenres.map((genre) => (
-            <GenreTag key={genre.id}>{genre.name}</GenreTag>
-          ))}
-        </GenreList>
+        <GenreGroup genreList={movieGenres} />
       </SearchArea>
       <CardList>
         {list.map((movie) => {
@@ -82,14 +78,8 @@ const SearchArea = styled.div`
   gap: 24px;
   flex-shrink: 0;
   @media screen and (${DEVICES.md}) {
-    width: auto;
+    width: 100%;
   }
-`
-
-const GenreList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
 `
 
 const CardList = styled.div`
@@ -97,6 +87,9 @@ const CardList = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px 36px;
+  @media screen and (${DEVICES.lg}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 const MovieCard = styled(InfoCard)``

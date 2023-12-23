@@ -15,5 +15,6 @@ const GenreTagWrapper = styled.div`
   border: 1px solid;
   font-weight: 100;
   font-size: 12px;
+  white-space: nowrap;
   cursor: pointer;
 `

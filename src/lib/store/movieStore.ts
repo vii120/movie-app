@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { MovieItemType, MovieGenreType } from '@/lib/types'
+import { MovieItemType, GenreType } from '@/lib/types'
 import { useUserStore } from '@/lib/store'
 import { getQueryString } from '@/lib/utils/helpers'
 
@@ -7,7 +7,7 @@ type MovieState = {
   moviePage: number
   movieList: MovieItemType[]
   movieSearchList: MovieItemType[]
-  movieGenres: MovieGenreType[]
+  movieGenres: GenreType[]
 
   fetchTrendingMovie: () => void
   fetchMovieGenres: () => void
