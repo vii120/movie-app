@@ -1,11 +1,8 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
-import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
-import { DEVICES } from '@/lib/utils/constants'
-import { InfoCard } from '@/components/InfoCard'
-import { GenreGroup } from '@/components/GenreGroup'
+import { PageLayout } from '@/components/PageLayout'
 
 export default function Movie() {
   const {
@@ -30,47 +27,16 @@ export default function Movie() {
   }, [])
 
   return (
-    <Container>
-      <GenreGroup genreList={movieGenres} onClick={(id) => onSearchMovie(id)} />
-      <CardList>
-        {list.map((movie) => {
-          return (
-            <Card
-              key={movie.id}
-              id={movie.id}
-              name={movie.title}
-              date={movie.release_date}
-              rating={movie.vote_average}
-              posterPath={movie.poster_path}
-            />
-          )
-        })}
-      </CardList>
-    </Container>
+    <PageLayout
+      list={list.map((movie) => ({
+        id: movie.id,
+        name: movie.title,
+        date: movie.release_date,
+        vote_average: movie.vote_average,
+        poster_path: movie.poster_path,
+      }))}
+      genres={movieGenres}
+      onSearch={onSearchMovie}
+    />
   )
 }
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 12px 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 36px;
-  @media screen and (${DEVICES.md}) {
-    flex-direction: column;
-  }
-`
-
-const CardList = styled.div`
-  max-width: 800px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px 36px;
-  @media screen and (${DEVICES.lg}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`
-
-const Card = styled(InfoCard)``

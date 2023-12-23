@@ -28,8 +28,3 @@ export type TvseriesItemType = {
   first_air_date: string
   original_language: string
 }
-
-export type TvseriesGenreType = {
-  id: number
-  name: string
-}

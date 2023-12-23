@@ -1,11 +1,11 @@
 import { create } from 'zustand'
-import { TvseriesItemType, TvseriesGenreType } from '@/lib/types'
+import { TvseriesItemType, GenreType } from '@/lib/types'
 import { useApiStore } from '@/lib/store'
 
 type TvseriesState = {
   tvseriesList: TvseriesItemType[]
   tvseriesSearchList: TvseriesItemType[]
-  tvseriesGenres: TvseriesGenreType[]
+  tvseriesGenres: GenreType[]
 
   fetchTrendingTvseries: () => void
   fetchTvseriesGenres: () => void

@@ -68,6 +68,7 @@ const Container = styled.div`
   transition: all 0.3s;
   border-radius: 24px;
   border: 1px solid transparent;
+  will-change: backdrop-filter, border-color;
 
   &.highlight {
     backdrop-filter: blur(15px) brightness(0.8);
