@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '@/components/Button'
 import { useMovieStore } from '@/lib/store'
 import { getImgFullPath } from '@/lib/utils/helpers'
 import { DEVICES } from '@/lib/utils/constants'
@@ -15,9 +14,7 @@ export const MainSection = () => {
   const { movieList, fetchTrendingMovie } = useMovieStore()
 
   useEffect(() => {
-    if (movieList.length === 0) {
-      fetchTrendingMovie()
-    }
+    fetchTrendingMovie()
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.pageX, y: e.pageY })
     }
@@ -43,7 +40,6 @@ export const MainSection = () => {
             Get ready to embark on a cinematic <span>adventure</span> like no
             other
           </Title>
-          <Button>explore</Button>
         </TitleWrapper>
         {!!movieList.length && (
           <SwiperWrapper>
