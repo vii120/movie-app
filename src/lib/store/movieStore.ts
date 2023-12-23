@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { MovieItemType, GenreType } from '@/lib/types'
-import { useUserStore } from '@/lib/store'
+import { useUserStore, useApiStore } from '@/lib/store'
 import { getQueryString } from '@/lib/utils/helpers'
 
 type MovieState = {
@@ -30,29 +30,24 @@ export const useMovieStore = create<MovieState>((set, get) => ({
       ...get().computed.defaultQueries,
       type: 'week',
     })
-    const url = `/api/trending${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ moviePage: data.page })
-    set((state) => ({ movieList: [...state.movieList, ...data.results] }))
+    const res = await useApiStore.getState().fetchTrending(queryString)
+    set((state) => ({
+      movieList: [...state.movieList, ...res.results],
+      moviePage: res.page,
+    }))
   },
   fetchMovieGenres: async () => {
-    const queryString = getQueryString({ ...get().computed.defaultQueries })
-    const url = `/api/genre${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ movieGenres: data.genres })
+    const queryString = getQueryString(get().computed.defaultQueries)
+    const res = await useApiStore.getState().fetchGenres(queryString)
+    set({ movieGenres: res.genres })
   },
   onSearchMovie: async (genre) => {
     const queryString = getQueryString({
       ...get().computed.defaultQueries,
       genre,
-      page: 1,
-    }) // @todo: handle page
-    const url = `/api/discover${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ movieSearchList: data.results })
+    })
+    const res = await useApiStore.getState().onSearch(queryString)
+    set({ movieSearchList: res.results })
   },
 
   computed: {

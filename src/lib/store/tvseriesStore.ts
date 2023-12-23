@@ -1,15 +1,17 @@
 import { create } from 'zustand'
 import { TvseriesItemType, TvseriesGenreType } from '@/lib/types'
-import { useUserStore } from '@/lib/store'
+import { useUserStore, useApiStore } from '@/lib/store'
 import { getQueryString } from '@/lib/utils/helpers'
 
 type TvseriesState = {
   tvseriesPage: number
   tvseriesList: TvseriesItemType[]
   tvseriesGenres: TvseriesGenreType[]
+
   fetchTrendingTvseries: () => void
   fetchTvseriesGenres: () => void
-  onSearchTvseries: (query: string) => void
+  onSearchTvseries: (genre: number) => void
+
   computed: {
     genreById: Record<number, string>
     defaultQueries: Record<string, string>
@@ -26,30 +28,25 @@ export const useTvseriesStore = create<TvseriesState>((set, get) => ({
       ...get().computed.defaultQueries,
       type: 'week',
     })
-    const url = `/api/trending${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ tvseriesPage: data.page })
-    set((state) => ({ tvseriesList: [...state.tvseriesList, ...data.results] }))
+    const res = await useApiStore.getState().fetchTrending(queryString)
+    set((state) => ({
+      tvseriesList: [...state.tvseriesList, ...res.results],
+      tvseriesPage: res.page,
+    }))
   },
   fetchTvseriesGenres: async () => {
     const queryString = getQueryString({ ...get().computed.defaultQueries })
-    const url = `/api/genre${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ tvseriesGenres: data.genres })
+    const res = await useApiStore.getState().fetchGenres(queryString)
+
+    set({ tvseriesGenres: res.genres })
   },
-  onSearchTvseries: async (query: string) => {
-    if (query === '') return
+  onSearchTvseries: async (genre) => {
     const queryString = getQueryString({
       ...get().computed.defaultQueries,
-      query,
-      page: 1,
+      genre,
     }) // @todo: handle page
-    const url = `/api/discover${queryString}`
-    const res = await fetch(url, { method: 'GET' })
-    const { data } = await res.json()
-    set({ tvseriesList: data.results })
+    const res = await useApiStore.getState().onSearch(queryString)
+    set({ tvseriesList: res.results })
   },
   computed: {
     get genreById() {

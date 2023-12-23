@@ -20,6 +20,8 @@ export const GenreGroup = ({ genreList, onClick }: GenreTagProps) => {
 }
 
 const GenreList = styled.div`
+  position: sticky;
+  top: 100px;
   max-width: 250px;
   display: flex;
   align-items: center;
