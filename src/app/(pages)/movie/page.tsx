@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { useMovieStore } from '@/lib/store'
 import { DEVICES } from '@/lib/utils/constants'
 import { InfoCard } from '@/components/InfoCard'
-import { SearchBar } from '@/components/SearchBar'
 import { GenreGroup } from '@/components/GenreGroup'
 
 export default function Movie() {
@@ -19,7 +18,7 @@ export default function Movie() {
   } = useMovieStore()
 
   const list = useMemo(() => {
-    if (movieSearchList.length) {
+    if (movieSearchList?.length) {
       return movieSearchList
     }
     return movieList
@@ -36,10 +35,7 @@ export default function Movie() {
 
   return (
     <Container>
-      <SearchArea>
-        <SearchBar />
-        <GenreGroup genreList={movieGenres} />
-      </SearchArea>
+      <GenreGroup genreList={movieGenres} onClick={(id) => onSearchMovie(id)} />
       <CardList>
         {list.map((movie) => {
           return (
@@ -68,17 +64,6 @@ const Container = styled.div`
   gap: 36px;
   @media screen and (${DEVICES.md}) {
     flex-direction: column;
-  }
-`
-
-const SearchArea = styled.div`
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex-shrink: 0;
-  @media screen and (${DEVICES.md}) {
-    width: 100%;
   }
 `
 

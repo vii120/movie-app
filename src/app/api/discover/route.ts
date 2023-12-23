@@ -7,12 +7,10 @@ const isProd = process.env.NODE_ENV === 'production'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
-  const type = searchParams.get('type') || 'week'
   const language = searchParams.get('lang') || 'en-US'
   const page = searchParams.get('page') || 1
   const mediaType = searchParams.get('media') || 'all'
   const with_genres = searchParams.get('genre') || null
-  const with_keywords = searchParams.get('query') || null
 
   const PREFIX_URL = `https://api.themoviedb.org/3/discover/${mediaType}`
 
@@ -22,9 +20,8 @@ export async function GET(request: NextRequest) {
         language,
         page,
         with_genres,
-        with_keywords,
       })
-      const res = await fetch(`${PREFIX_URL}/${type}${queryString}`, {
+      const res = await fetch(`${PREFIX_URL}/${queryString}`, {
         headers: {
           Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
           'Content-Type': 'application/json',
