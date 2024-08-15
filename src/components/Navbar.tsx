@@ -40,13 +40,6 @@ export const Navbar = () => {
         >
           TV Series
         </NavLink>
-        <NavLink
-          href="https://github.com/vii120/movie-app"
-          target="_blank"
-          rel="noopener"
-        >
-          Github
-        </NavLink>
       </Container>
     </>
   )
